@@ -2,6 +2,7 @@ package vconf
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 
 	"github.com/pkg/errors"
@@ -56,7 +57,7 @@ func setDefaultValues(prefix string, val reflect.Value) {
 		if typeField.Tag.Get("default") != "" {
 			viper.SetDefault(nameField, typeField.Tag.Get("default"))
 		}
-		
+
 		if typeField.Tag.Get("env") != "" && os.Getenv(typeField.Tag.Get("env")) != "" {
 			viper.SetDefault(nameField, os.Getenv(typeField.Tag.Get("env")))
 		}
