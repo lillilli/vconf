@@ -23,7 +23,6 @@ func InitFromFile(path string, cfg interface{}) error {
 // load - получение конфига
 func load(path string, config interface{}) error {
 	setDefaultValues("", reflect.ValueOf(config))
-	viper.AutomaticEnv()
 
 	if path != "" {
 		viper.SetConfigFile(path)
@@ -56,6 +55,10 @@ func setDefaultValues(prefix string, val reflect.Value) {
 
 		if typeField.Tag.Get("default") != "" {
 			viper.SetDefault(nameField, typeField.Tag.Get("default"))
+		}
+		
+		if typeField.Tag.Get("env") != "" && os.Getenv(typeField.Tag.Get("env")) != "" {
+			viper.SetDefault(nameField, os.Getenv(typeField.Tag.Get("env")))
 		}
 	}
 }
